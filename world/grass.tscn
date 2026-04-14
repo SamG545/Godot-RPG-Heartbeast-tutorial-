@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://ed8kim7564r0"]
+
+[ext_resource type="Script" uid="uid://b0pd5jg1orj3k" path="res://world/Grass.cs" id="1_6gvtj"]
+[ext_resource type="Texture2D" uid="uid://k277vp0c6lki" path="res://world/grass.png" id="1_44d1o"]
+[ext_resource type="PackedScene" uid="uid://yuu2veqlh4yc" path="res://damage_boxes/HurtBox.tscn" id="3_aervy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44d1o"]
+size = Vector2(14, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6gvtj"]
+size = Vector2(16, 16)
+
+[node name="Grass" type="StaticBody2D" unique_id=1465663461]
+collision_layer = 8
+script = ExtResource("1_6gvtj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=465593870]
+texture = ExtResource("1_44d1o")
+
+[node name="HurtBox" parent="." unique_id=81003525 instance=ExtResource("3_aervy")]
+collision_layer = 32
+collision_mask = 64
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HurtBox" unique_id=377438387]
+shape = SubResource("RectangleShape2D_44d1o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=371153054]
+shape = SubResource("RectangleShape2D_6gvtj")
+
+[connection signal="Hurt" from="HurtBox" to="." method="OnHurt"]

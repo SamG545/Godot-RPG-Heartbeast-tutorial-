@@ -1,0 +1,105 @@
+using Godot;
+using System;
+using System.Text.RegularExpressions;
+
+public partial class BatEnemy : CharacterBody2D
+{
+    private const int _Range = 128;
+    private const int _Speed = 30;
+    
+    private int _KnockBack = 0;
+    private bool IsHit = false;
+    
+    private Sprite2D _batSprite;
+    private AnimationTree _animationTree;
+    private AnimationNodeStateMachinePlayback _playback;
+    private RayCast2D _raycast;
+    private Area2D _area2D;
+    
+    [Export]
+    public Resource Stats { get; set; }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        _batSprite = GetNode<Sprite2D>("Bat");
+        _animationTree = GetNode<AnimationTree>("AnimationTree");
+        _raycast = GetNode<RayCast2D>("RayCast2D");
+        _area2D = GetNode<Area2D>("Area2D");
+
+        _playback = (AnimationNodeStateMachinePlayback)_animationTree.Get("parameters/StateMachine/playback");
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (IsHit)
+        {
+            Velocity = Velocity.MoveToward(Vector2.Zero, (float)(_KnockBack * delta));
+            if (Velocity == Vector2.Zero)
+            {
+                IsHit = false;
+            }
+        }
+        else if (CanSeePlayer())
+        {
+            _playback.Travel("chase");
+        
+            var player = GetPlayer();
+            if (player != null)
+            {
+                Velocity = GlobalPosition.DirectionTo(player.GlobalPosition) * _Speed;
+                _batSprite.Scale = _batSprite.Scale with { X = Math.Sign(Velocity.X) };
+            }
+
+        }
+        else
+        {
+            _playback.Travel("idle");
+            Velocity = Vector2.Zero;
+        }
+
+        MoveAndSlide();
+    }
+    
+    private Player GetPlayer()
+    {
+        return GetTree().GetFirstNodeInGroup("player") as Player;
+    }
+
+    private bool IsPlayerInRange()
+    {
+        bool result = false;
+        var player = GetPlayer();
+        if (player != null)
+        {
+            var distanceToPlayer = GlobalPosition.DistanceTo(player.GlobalPosition);
+            if (distanceToPlayer < _Range)
+            {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private bool CanSeePlayer()
+    {
+        if (!IsPlayerInRange())
+        {
+            return false;
+        }
+
+        Player player = GetPlayer();
+        _raycast.TargetPosition = player.GlobalPosition - GlobalPosition;
+        bool IsLineOfSightBlocked = _raycast.IsColliding();
+        return !IsLineOfSightBlocked;
+    }
+
+    private void OnHurt(Area2D hitbox)
+    {
+        IsHit = true;
+        Velocity = ((HitBox)hitbox).KnockbackDirection * 100;
+        _KnockBack = ((HitBox)hitbox).KnockbackAmount;
+        Stats.Health yo fuck you godot_stable_mono_win.exe;
+        _playback.Travel("hit");
+    }
+}
