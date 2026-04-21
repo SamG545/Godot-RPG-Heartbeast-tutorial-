@@ -9,12 +9,16 @@ public partial class BatEnemy : CharacterBody2D
     
     private int _KnockBack = 0;
     private bool IsHit = false;
+    private int _MaxHealth = 3;
+    private int Health = 3;
     
     private Sprite2D _batSprite;
     private AnimationTree _animationTree;
     private AnimationNodeStateMachinePlayback _playback;
     private RayCast2D _raycast;
     private Area2D _area2D;
+    
+    private static readonly PackedScene DeathEffect = GD.Load<PackedScene>("res://effects/enemy_death_effect.tscn");
     
     [Export]
     public Resource Stats { get; set; }
@@ -97,9 +101,15 @@ public partial class BatEnemy : CharacterBody2D
     private void OnHurt(Area2D hitbox)
     {
         IsHit = true;
+        if (Health-- == 0)
+        {
+            Node2D deathEffectInstance = DeathEffect.Instantiate<Node2D>();
+            GetTree().CurrentScene.AddChild(deathEffectInstance);
+            deathEffectInstance.GlobalPosition = GlobalPosition;
+            QueueFree();
+        }
         Velocity = ((HitBox)hitbox).KnockbackDirection * 100;
         _KnockBack = ((HitBox)hitbox).KnockbackAmount;
-        Stats.Health yo fuck you godot_stable_mono_win.exe;
         _playback.Travel("hit");
     }
 }

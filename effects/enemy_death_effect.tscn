@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://cxs0k8m1y8tjb"]
+
+[ext_resource type="Texture2D" uid="uid://cghpg0qjfy18" path="res://effects/enemy_death_effect.png" id="1_bwh3b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_732bx"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3e5c"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrndp"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77w3m"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_he2p7"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wmex"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eeyxq"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc3md"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3hti"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vr25h"]
+atlas = ExtResource("1_bwh3b")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_27wg8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_732bx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3e5c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrndp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77w3m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_he2p7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wmex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eeyxq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc3md")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3hti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vr25h")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" unique_id=1785116871]
+sprite_frames = SubResource("SpriteFrames_27wg8")
+autoplay = "default"
+frame = 9
+frame_progress = 1.0
+
+[connection signal="animation_finished" from="." to="." method="queue_free"]
